@@ -2,25 +2,37 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap styles
 
-const CityForm = () => {
+const CityForm = (props) => {
   const [cityName, setCityName] = useState('');
   const [locationData, setLocationData] = useState(null);
+  const [showHeading, setShowHeading] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const API_KEY = import.meta.env.VITE_API_KEY;
+
+  const handleChange = (e) => {
+    setShowHeading(false);
+    setCityName(e.target.value);
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShowHeading(true);
 
     try {
-      const response = await axios.get(
-        `https://us1.locationiq.com/v1/search.php?key=VITE_API_KEY&q=${cityName}&format=json`
-      );
+      const response = await axios.get(`Y?city=${cityName}&apiKey=${API_KEY}`);
 
-      const { display_name, lat, lon } = response.data[0];
+      const firstResult = response.data[0];
 
-      setLocationData({ displayName: display_name, latitude: lat, longitude: lon });
+      if (firstResult) {
+        const { display_name, lat, lon } = firstResult;
+        setLocationData({ displayName: display_name, latitude: lat, longitude: lon });
+      } else {
+        console.error('No results found for', cityName);
+      }
     } catch (error) {
       console.error('Error fetching location data:', error.message);
     }
-  };
+  }
 
   return (
     <div className="container mt-5">
@@ -34,7 +46,8 @@ const CityForm = () => {
             className="form-control"
             id="cityName"
             value={cityName}
-            onChange={(e) => setCityName(e.target.value)}
+            onChange={handleChange}
+            placeholder="Enter city name"
           />
         </div>
         <button type="submit" className="btn btn-primary">
@@ -42,7 +55,7 @@ const CityForm = () => {
         </button>
       </form>
 
-      {locationData && (
+      {showHeading && locationData && (
         <div className="mt-3">
           <h2>Location Data</h2>
           <p>
