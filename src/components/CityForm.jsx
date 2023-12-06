@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap styles
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {If, Then, Else} from 'react-if'; // Import Bootstrap styles
 
 const CityForm = (props) => {
   const [cityName, setCityName] = useState('');
@@ -17,9 +18,8 @@ const CityForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setShowHeading(true);
-
     try {
-      const response = await axios.get(`Y?city=${cityName}&apiKey=${API_KEY}`);
+      const response = await axios.get(`https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${cityName}&format=json`);
 
       const firstResult = response.data[0];
 

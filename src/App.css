@@ -4,6 +4,44 @@
   padding: 2rem;
   text-align: center;
 }
+header{
+  padding: 15px;
+  background-color: aqua;
+
+}
+/* Header Styles */
+header {
+  background-image: url('https://i.pinimg.com/564x/5f/c6/1f/5fc61f1ca56c4c974386a3b8d750e51d.jpg');
+  background-size: cover; /* Cover the entire header with the background image */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Do not repeat the background image */
+  color: #fff; /* Light text color */
+  padding: 10px 20px; /* Padding for spacing */
+  text-align: center; /* Center-align text */
+  margin: 0; /* Remove default margin */
+  width: 1080px; /* Make the header full width */
+}
+
+h1 {
+  margin: 0; /* Remove default margin for h1 */
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Add margin for spacing */
+}
+
+nav a {
+  color: #fff; /* Light text color for links */
+  margin: 0 15px; /* Add spacing between links */
+  text-decoration: none; /* Remove underline from links */
+  font-weight: bold; /* Make links bold */
+}
+
+nav a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
 
 .logo {
   height: 6em;
