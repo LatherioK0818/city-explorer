@@ -32,10 +32,10 @@ To build and run this app locally, follow these steps:
 
 ### Feature: Implementing Axios for API Requests
 
-- **Estimate**: 2 hours
-- **Start time**: 12-04-2023 6:00pm
+- **Estimate**: 1 hours
+- **Start time**: 12-05-2023 6:00pm
 - **Finish time**: 
-- **Actual time**: 2.5 hours
+- **Actual time**: 3.5 hours
 
 ### Feature: Integrating Trello for Project Management
 
@@ -52,45 +52,3 @@ To build and run this app locally, follow these steps:
 - Provide time estimates and actual times for each feature implemented.
 
 
-## NPM issues  Not running
-
-![Alt text](image.png)
-
-➜  city-explorer git:(lab6branch2) npm start
-npm ERR! Missing script: "start"
-npm ERR! 
-npm ERR! Did you mean one of these?
-npm ERR!     npm star # Mark your favorite packages
-npm ERR!     npm stars # View packages marked as favorites
-npm ERR! 
-npm ERR! To see a list of scripts, run:
-npm ERR!   npm run
-
-npm ERR! A complete log of this run can be found in: /home/kidd/.npm/_logs/2023-12-05T07_17_19_961Z-debug-0.log
-➜  city-explorer git:(lab6branch2)
-
-
-## Netlify Error
-
-2:14:50 AM: Failed during stage "building site": Build script returned non-zero exit code: 2
-2:14:50 AM: Deploy site                                                   
-2:14:50 AM: ────────────────────────────────────────────────────────────────
-2:14:50 AM: ​
-2:14:50 AM: Section completed: deploying
-2:14:50 AM: ​
-2:14:50 AM: Configuration error                                           
-2:14:50 AM: ────────────────────────────────────────────────────────────────
-2:14:50 AM: ​
-2:14:50 AM:   Error message
-2:14:50 AM:   Deploy did not succeed: Deploy directory "build" does not exist
-2:14:50 AM: ​
-2:14:50 AM:   Resolved config
-2:14:50 AM:   build:
-2:14:50 AM:     command: npm run build
-2:14:50 AM:     commandOrigin: ui
-2:14:50 AM:     environment:
-2:14:50 AM:       - VITE_API_KEY
-2:14:50 AM:     publish: /opt/build/repo/build
-2:14:50 AM:     publishOrigin: ui
-2:14:50 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
-2:14:50 AM: Failing build: Failed to build site

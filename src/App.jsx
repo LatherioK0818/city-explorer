@@ -1,55 +1,69 @@
-import { useState } from 'react'
+// App.js
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 import CityForm from './components/CityForm';
 import Header from './components/Header';
 import Map from './components/Map';
 import Footer from './components/Footer';
-import ErrorMessage from './components/ErrorMessage';
+import Error from './components/ErrorMessage';
+import Weather from './components/Weather';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
+const SERVER = import.meta.env.VITE_SERVER_SIDE;
 
 function App() {
+  const [location, setLocation] = useState({
+    city: '',
+    latitude: null,
+    longitude: null,
+  });
+  const [weatherData, setWeatherData] = useState([]);
+  const [error, setError] = useState('');
 
-  const [city, setCity] = useState('');
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  useEffect(() => {
+    if (location.latitude !== null && location.longitude !== null) {
+      grabWeatherData(location.latitude, location.longitude);
+    }
+  }, [location]);
 
-  function changeCity(newCity) {
-
-    // get the location data
-    getLocation(newCity);
-
-    // print a map
-    console.log("Changing to", newCity);
-  }
-
-  // Use API (locationIQ) to get the lat/lon
-  async function getLocation(cityName){
-
-    // 1. Call the API asynchronously
+  async function grabCityData(cityName) {
     let url = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${cityName}&format=json`;
     try {
       let response = await axios.get(url);
-      // 2. Put the city into state
-      setCity(response.data[0].display_name)
-
-      // 3. Put the lat/lon into state
-      setLatitude(response.data[0].lat);
-      setLongitude(response.data[0].lon);
-
-    } catch(error) {
-      console.error(error.message)
+      setLocation({
+        city: response.data[0].display_name,
+        latitude: response.data[0].lat,
+        longitude: response.data[0].lon,
+      });
+    } catch (error) {
+      setError(error.message);
+      console.error(error.message);
     }
-
   }
+
+  async function grabWeatherData(latitude, longitude) {
+    try {
+      let response = await axios.get(SERVER, { params: { latitude, longitude } });
+      const { CityName, forecast } = response.data;
+      console.log("CityName:", CityName);
+      console.log("forecast:", forecast);
+      setWeatherData(forecast);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <>
       <Header />
-      <CityForm />
-      <Map />
+      <CityForm grabCityData={grabCityData} />
+      <Map selectedCity={location.city} latitude={location.latitude} longitude={location.longitude} />
+      <Weather weather={weatherData} selectedCity={location.city} />
+      <Error show={error !== ''} errorMessage={error} />
       <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
