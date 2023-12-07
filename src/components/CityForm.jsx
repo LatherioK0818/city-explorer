@@ -1,37 +1,22 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {If, Then, Else} from 'react-if'; // Import Bootstrap styles
 
 const CityForm = (props) => {
-  const [cityName, setCityName] = useState('');
+  const [cityName, setCityName] = useState('Amman');
   const [locationData, setLocationData] = useState(null);
   const [showHeading, setShowHeading] = useState(false);
-
-  const API_KEY = import.meta.env.VITE_API_KEY;
 
   const handleChange = (e) => {
     setShowHeading(false);
     setCityName(e.target.value);
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setShowHeading(true);
-    try {
-      const response = await axios.get(`https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${cityName}&format=json`);
 
-      const firstResult = response.data[0];
-
-      if (firstResult) {
-        const { display_name, lat, lon } = firstResult;
-        setLocationData({ displayName: display_name, latitude: lat, longitude: lon });
-      } else {
-        console.error('No results found for', cityName);
-      }
-    } catch (error) {
-      console.error('Error fetching location data:', error.message);
-    }
+    props.handleChangeCity(cityName);
+    setLocationData(cityName);
   }
 
   return (
@@ -59,13 +44,13 @@ const CityForm = (props) => {
         <div className="mt-3">
           <h2>Location Data</h2>
           <p>
-            <strong>City:</strong> {locationData.displayName}
+            <strong>City:</strong> {props.city}
           </p>
           <p>
-            <strong>Latitude:</strong> {locationData.latitude}
+            <strong>Latitude:</strong> {props.latitude}
           </p>
           <p>
-            <strong>Longitude:</strong> {locationData.longitude}
+            <strong>Longitude:</strong> {props.longitude}
           </p>
         </div>
       )}
