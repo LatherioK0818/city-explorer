@@ -1,39 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-const SERVER = import.meta.env.VITE_SERVER_SIDE;
+const Weather = (props) => {
+  const [showWeather, setShowWeather] = useState(null);
 
-const Weather = ({ weather, selectedCity }) => {
-  const [weatherData, setWeatherData] = useState([]);
-
-  async function getWeather() {
-    try {
-      const response = await axios.get(SERVER);
-      setWeatherData(response.data.weatherData);
-    } catch (error) {
-      console.error('Error fetching weather data:', error.message);
-    }
+  const getWeather = () => {
+    setShowWeather(true);
   }
-
-  useEffect(() => {
-    setWeatherData(weather);
-  }, [weather]);
 
   return (
     <div>
-      <h2>Weather Forecast for {selectedCity}</h2>
-      {weatherData.length === 0 ? (
+      <h2>Weather Forecast for {props.city}</h2>
+      {props.weatherData.length === 0 ? (
         <p>No forecast data available</p>
       ) : (
         <div>
-          <ul>
-            {weatherData.map((forecast, index) => (
-              <li key={index}>
-                <strong>Date:</strong> {forecast.date}, <strong>Description:</strong> {forecast.description}
-              </li>
-            ))}
-          </ul>
+          {showWeather ?
+            <ul>
+              {props.weatherData.map((forecast, index) => (
+                <li key={index}>
+                  <strong>Date:</strong> {forecast.date} &nbsp; - &nbsp; 
+                  <strong>Description:</strong> {forecast.description}
+                </li>
+              ))}
+            </ul>
+            : null
+          }
+
           <Button onClick={getWeather}>
             Get Weather
           </Button>
@@ -44,4 +37,3 @@ const Weather = ({ weather, selectedCity }) => {
 };
 
 export default Weather;
-
