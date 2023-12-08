@@ -1,39 +1,29 @@
 import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
 
-const Weather = (props) => {
-  const [showWeather, setShowWeather] = useState(null);
+function Weather (props)  {
+  const [showWeather, setShowWeather] = useState(false);
 
   const getWeather = () => {
     setShowWeather(true);
   }
 
-  return (
-    <div>
-      <h2>Weather Forecast for {props.city}</h2>
-      {props.weatherData.length === 0 ? (
-        <p>No forecast data available</p>
-      ) : (
-        <div>
-          {showWeather ?
-            <ul>
-              {props.weatherData.map((forecast, index) => (
-                <li key={index}>
-                  <strong>Date:</strong> {forecast.date} &nbsp; - &nbsp; 
-                  <strong>Description:</strong> {forecast.description}
-                </li>
-              ))}
-            </ul>
-            : null
-          }
+  console.log(typeof props.weatherData);  // Add your console.log message inside the parentheses
 
-          <Button onClick={getWeather}>
-            Get Weather
-          </Button>
+  return (
+      <div>
+        {console.log(props.weatherData)}
+      {props.weatherData.length > 0 ? props.weatherData.map((forecast, index) => (
+      <div key={index}>
+        <p><strong>Date:</strong> {forecast.date} </p>
+        <p><strong>Description:</strong> {forecast.description}</p>
+        <p><strong>Low Temp:</strong> {forecast.lowTemp}</p>
+        <p><strong>High Temp:</strong> {forecast.highTemp}</p>
         </div>
-      )}
-    </div>
+       )):<p> "Data Not Found"</p>}
+      </div>
   );
 };
 
 export default Weather;
+
+

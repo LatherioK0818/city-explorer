@@ -12,7 +12,8 @@ import './App.css';
 const API_KEY = import.meta.env.VITE_API_KEY;
 const SERVER = import.meta.env.VITE_SERVER_SIDE;
 const BASE_URL = `https://us1.locationiq.com/v1/search?key=${API_KEY}`
-const MOVIE_API_KEY = import.meta.env.MOVIE_API_KEY;
+const SERVER_MOVIES = import.meta.env.VITE_MOVIE_READ_ACCESS
+const MOVIE_API_KEY = import.meta.env.VITE_MOVIE_API_KEY;
 
 function App() {
   // =========================== DECLARE STATE VARS
@@ -33,8 +34,9 @@ function App() {
       setLatitude(res.data[0].lat);
       setLongitude(res.data[0].lon);
       grabWeatherData(res.data[0].lat, res.data[0].lon, cityName);
+      console.log(weatherData);
       grabMovieData(res.data[0].display_name);
-
+      console.log(res.data[0]);
     } catch (err) {
       console.error(err.message);
       setError(`${err.code}: ${err.message}. Check your input and try again.`);
@@ -43,28 +45,27 @@ function App() {
   }
 
   async function grabWeatherData(lat, lon, city) {
-    let query = `${SERVER}/weather?lat=${lat}&lon=${lon}&q=${city}`;
-
+    let query = `${SERVER}/weather?lat=${lat}&lon=${lon}`;
     try {
       let res = await axios.get(query);
 
-      console.log(res.data);
-      let loc_api_data = res.data;
+      console.log(res.data.Forecast);
+      let loc_api_data = res.data.Forecast;
 
-      let weather = loc_api_data.data.map(d => {
+      // let weather = loc_api_data.map(d => {
 
-        let dObject = {
-          date : d.datetime,
-          description : d.weather.description,
-          temp : d.weather.temp
-        }
+      //   let dObject = {
+      //     date : d.datetime,
+      //     description : d.weather.description,
+      //     temp : d.weather.temp
+      //   }
 
-        return dObject;
-      })
+      //   return dObject;
+      // })
 
       console.log(loc_api_data);
-
-      setWeatherData(weather);
+      console.log(res.data.Forecast);
+      setWeatherData(res.data.Forecast);
       setIsWeatherData(true);
 
     } catch (err) {
@@ -85,9 +86,8 @@ async function grabMovieData(cityName) {
     }));
 
     // Set the movies state
-    setMovies(movies);
+    setMovies(reponse.data);
 
-    console.log(movies);
   } catch (err) {
     console.error(err);
     setError(`${err.code}: ${err.message}.`);
@@ -111,12 +111,8 @@ async function grabMovieData(cityName) {
       />
 
       <Map latitude={latitude} longitude={longitude} />
-
-      {
-        isWeatherData
-          ? <Weather weatherData={weatherData} city={city} />
-          : null
-      }
+      
+         {weatherData &&<Weather weatherData={weatherData} city={city} />}
       {error ? <Error show={error} errorMessage={error.message} /> : null}
       {movies.map > 0 ? <Movies movies={movies} /> : null}
       <Footer />
