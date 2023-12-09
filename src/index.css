@@ -6,7 +6,6 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,14 +23,16 @@ a:hover {
 
 body {
   margin: 0;
-  color: white;
+  color: rgb(7, 128, 15);
   font-weight: bold;
   font-size: large;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-image: url('https://i.pinimg.com/564x/5f/c6/1f/5fc61f1ca56c4c974386a3b8d750e51d.jpg');
+  background-image: url('https://images.unsplash.com/photo-1516939884455-1445c8652f83?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1 {

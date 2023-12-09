@@ -12,7 +12,7 @@ import './App.css';
 const API_KEY = import.meta.env.VITE_API_KEY;
 const SERVER = import.meta.env.VITE_SERVER_SIDE;
 const BASE_URL = `https://us1.locationiq.com/v1/search?key=${API_KEY}`
-const SERVER_MOVIES = import.meta.env.VITE_MOVIE_READ_ACCESS
+const MOVIES_TOKEN = import.meta.env.VITE_MOVIE_READ_ACCESS
 const MOVIE_API_KEY = import.meta.env.VITE_MOVIE_API_KEY;
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
       setLongitude(res.data[0].lon);
       grabWeatherData(res.data[0].lat, res.data[0].lon, cityName);
       console.log(weatherData);
-      grabMovieData(res.data[0].display_name);
+      grabMovieData(cityName);
       console.log(res.data[0]);
     } catch (err) {
       console.error(err.message);
@@ -73,21 +73,18 @@ function App() {
       setError(`${err.code}: ${err.message}.`);
     }
   }
-async function grabMovieData(cityName) {
+  async function grabMovieData(cityName) {
   try {
-    let response = await axios.get(SERVER_MOVIES, { params: { "city": cityName } });
-    let movieData = response.data;
-
-    // Process the movie data as needed
-    // For example, if your movie API response has a 'movies' property, you can extract it like this:
-    let movies = movieData.movies.map(movie => ({
-      title: movie.title,
-      // Add other properties you need
-    }));
-
-    // Set the movies state
-    setMovies(reponse.data);
-
+    const url =`https://api.themoviedb.org/3/search/movie?query=${cityName}&include_adult=false&language=en-US&page=1`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${MOVIES_TOKEN}`
+      }
+    };
+    const response = await axios(url, options)
+    setMovies(response.data.results)
   } catch (err) {
     console.error(err);
     setError(`${err.code}: ${err.message}.`);
@@ -112,9 +109,9 @@ async function grabMovieData(cityName) {
 
       <Map latitude={latitude} longitude={longitude} />
       
-         {weatherData &&<Weather weatherData={weatherData} city={city} />}
+      {weatherData &&<Weather weatherData={weatherData} city={city} />}
       {error ? <Error show={error} errorMessage={error.message} /> : null}
-      {movies.map > 0 ? <Movies movies={movies} /> : null}
+      <Movies movies={movies} />
       <Footer />
     </>
   );

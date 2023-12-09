@@ -20,7 +20,7 @@ const CityForm = (props) => {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="location-container">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="cityName" className="form-label">
